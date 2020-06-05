@@ -1,0 +1,152 @@
+<html>
+  <head>
+    <title>Sky Switch</title>
+    <link rel="stylesheet" type="text/css" href="box.css">
+  </head>
+  <body>
+    <!--include the three.js library-->
+    <script src="js/three.js"> </script>
+    <!-- orbit controls -->
+    <script src="js/OrbitControls.js"> </script>   
+    
+    <div class= "box">
+    <a onclick="changeColor('dawn')" id="dawn">#92e0ff</a>
+    <a onclick="changeColor('noon')" id="noon">#4bc1ec</a>
+    <a onclick="changeColor('set')" id="set">#ff932e</a>
+    <a onclick="changeColor('dusk')" id="dusk">#a981d6</a>
+    <a onclick="changeColor('night')" id="night">#08052b</a>
+  </div>
+
+    <script>
+    function changeColor(id) {
+            document.body.style.background = document.getElementById(id).innerHTML;
+    }
+
+    //create the scene
+    var scene = new THREE.Scene( );
+    var ratio = window.innerWidth/window.innerHeight;
+    //create the perspective camera
+    //for parameters see https://threejs.org/docs/#api/cameras/PerspectiveCamera
+    var camera = new THREE.PerspectiveCamera(45,ratio,0.1,1000);
+
+    //set the camera position
+    camera.position.set(0,0,15);
+    // and the direction
+	  camera.lookAt(0,0,1);
+
+    //create the webgl renderer
+    var renderer = new THREE.WebGLRenderer( {alpha:true});
+    renderer.setClearColor(0xffffff,0);
+
+    //set the size of the rendering window
+    renderer.setSize(window.innerWidth,window.innerHeight);
+
+    //add the renderer to the current document
+    document.body.appendChild(renderer.domElement );
+    
+    
+
+    //lighting
+    //basic light from camera towards the scene
+    var cameralight = new THREE.PointLight( new THREE.Color(1,1,1), 0.5 );
+    camera.add( cameralight );
+    scene.add(camera);
+
+    //ambient lighting
+    var ambientlight = new THREE.AmbientLight(new THREE.Color(1,1,1),0.2);
+    scene.add(ambientlight);
+
+    //hemi lights
+    var hemiLight = new THREE.HemisphereLight( 0xffffff, 0xffffff, 0.61 );
+    hemiLight.position.set( 0, 50, 0 );
+    scene.add( hemiLight );
+
+    //controls
+    controls = new THREE.OrbitControls( camera, renderer.domElement );
+
+    function CreateScene(){
+
+    //add ground plane
+    //var geometryPlane = new THREE.PlaneGeometry(window.innerWidth,window.innerHeight,2);
+    //var materialPlane = new THREE.MeshPhongMaterial();
+    //var colorPlane = new THREE.Color("rgb(219, 112, 11)");
+    //materialPlane.color=colorPlane;
+    //materialPlane.shininess=20;
+    //var plane = new THREE.Mesh ( geometryPlane, materialPlane );
+    //plane.rotation.x = -Math.PI/2;
+    //plane.receiveShadow = true;
+    //plane.position.set(0,-15,0);
+    //scene.add( plane );
+
+    //add sun sphere to scene
+    var sphere_color = new THREE.Color("rgb(252, 226, 106)");
+    var sphere_geometry = new THREE.SphereGeometry(2, 32, 32 );
+    var sphere_material = new THREE.MeshPhongMaterial();
+    //shininess and color
+    sphere_material.color=sphere_color;
+    sphere_material.shininess=50;
+
+    sphere_material.wireframe=false;
+    var sphere_mesh = new THREE.Mesh( sphere_geometry, sphere_material );
+
+    //add another sphere to scene as moon
+    var sphere2_color = new THREE.Color("rgb(214, 214, 214)");
+    var sphere2_geometry = new THREE.SphereGeometry(1, 16, 16 );
+    var sphere2_material = new THREE.MeshPhongMaterial();
+    //shininess and color
+    sphere2_material.color=sphere2_color;
+    sphere2_material.shininess=20;
+    //set renderer to wireframe
+    sphere2_material.wireframe=false;
+    var sphere2_mesh = new THREE.Mesh( sphere2_geometry, sphere2_material );
+
+    //translate base position of the created objects
+    sphere_mesh.position.x-=5;
+    sphere2_mesh.position.x+=5;
+    sphere2_mesh.position.y+=3;
+
+    //add to scene
+    scene.add( sphere_mesh );
+    scene.add( sphere2_mesh );
+    }
+    CreateScene();
+
+
+
+  //final update loop
+  var MyUpdateLoop = function ( )
+  {
+    //call the render with the scene and the camera
+    renderer.render(scene,camera);
+
+    cube.rotation.x+=0.01;
+    cube.rotation.y+=0.01;
+    cube.rotation.z+=0.01;
+
+    controls.update();
+
+    //finally perform a recoursive call to update again
+    //this must be called because the mouse change the camera position
+    requestAnimationFrame(MyUpdateLoop);
+
+  };
+
+  requestAnimationFrame(MyUpdateLoop);
+
+  //this function is called when the window is resized
+  var MyResize = function ( )
+  {
+    var width = window.innerWidth;
+    var height = window.innerHeight;
+    renderer.setSize(width,height);
+    camera.aspect = width/height;
+    camera.updateProjectionMatrix();
+    renderer.render(scene,camera);
+  };
+
+  //link the resize of the window to the update of the camera
+  window.addEventListener( 'resize', MyResize);
+
+    </script>
+  </body>
+</html>

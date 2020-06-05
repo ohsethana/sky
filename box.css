@@ -1,0 +1,35 @@
+body{
+    margin: 0;
+    padding:0;
+    background: #92e0ff;
+}
+.box{
+    position:absolute;
+    top:40px;
+    right:40px;
+    padding: 5px;
+    background: #f1f1f1;
+}
+.box a{
+    width: 40px;
+    height: 40px;
+    float: left;
+    text-indent: -9999px;
+    margin: 5px;
+    cursor: pointer;
+}
+#dawn{
+    background: #92e0ff;
+}
+#noon{
+    background: #4bc1ec;
+}
+#set{
+    background: #ff932e;
+}
+#dusk{
+    background: #a981d6;
+}
+#night{
+    background: #08052b;
+}
