@@ -1,0 +1,23 @@
+<html>
+  <head>
+    <title>Sky Switch</title>
+    <link rel="stylesheet" type="text/css" href="box.css">
+  </head>
+  <body>
+    <!--include the three.js library-->
+    <script src="js/three.js"> </script>
+    <!-- orbit controls -->
+    <script src="js/OrbitControls.js"> </script>   
+    
+    <div class= "box">
+    <a onclick="changeColor('dawn')" id="dawn">#92e0ff</a>
+    <a onclick="changeColor('noon')" id="noon">#4bc1ec</a>
+    <a onclick="changeColor('set')" id="set">#ff932e</a>
+    <a onclick="changeColor('dusk')" id="dusk">#d2a1f7</a>
+    <a onclick="changeColor('night')" id="night">#08052b</a>
+  </div>
+
+  <!-- Sethana CREATE SCENE + Sky/sun/moon -->
+  <script src="skyspheres.js"></script>
+  </body>
+</html>
